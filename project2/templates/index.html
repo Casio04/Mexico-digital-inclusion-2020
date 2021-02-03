@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body style="background-color: rgb(5, 5, 5);"> 
+    <div class="navbar-expand-lg navbar-light bg-img" style="background-image: url(../static/images/background.png);">
+        <a href="index.html" class="navbar-brand px-3 hm-btn" style="color: white;">Home</a>
+        <h1 class="header"><b> Inclusión digital en México - 2020</b></h1>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="navbar-dark col-md-2">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column state-selector">
+                        <li class="nav-title style="color: white;>Please select a state:</li>
+                        <li class="nav-item">
+                            <select class="btn" id="stateDrop" onchange="StateChanged(this.value)">
+                            </select>
+                        </li>
+                    </ul>
+                    <hr>
+                    <table class="info-table center">
+                        <thead>
+                            <tr>
+                                <th colspan="2" class="theader">General Information</th>
+                            </tr>
+                           
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Attribute</td>
+                                <td>Value</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br><br>
+                    <img src="../static/images/monum.jpg" alt="" style="width: 70%;" class="ml-5">
+                </div>
+            </nav>
+        </div>
+    </div>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="../static/js/app.js"></script>
+</body>
+</html>

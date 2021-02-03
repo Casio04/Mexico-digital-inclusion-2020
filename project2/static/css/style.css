@@ -1,0 +1,76 @@
+.header{
+    color: rgb(255, 255, 255, 1);
+    text-align: center;
+    padding: 30px;
+    opacity: 1;
+}
+
+.bg-img{
+    height: 150px;
+    position: relative;
+    width: 100%;
+    background-position: 0% 10%;
+    background-size: cover;
+    opacity: 1
+}
+
+.btn{
+    margin-left: 20px;
+    color: white;
+    border: 1px solid  white;
+    opacity: 0.8;
+}
+
+.btn:hover{
+    color: teal;
+    border: 1px solid rgb(255, 255, 255);
+    opacity: 1;
+}
+
+.sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 48px;
+    height: calc(100vh - 48px);
+    padding-top: 1rem;
+    padding-right: -5rem;
+    margin-left: -1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: rgba(5, 33, 58, 0.267);
+}
+
+.nav-title{
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.theader{
+    text-align: center;
+    color:teal;
+    
+}
+
+.center{
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid rgb(59, 58, 58);
+}
+
+td{
+    color: rgb(255, 255, 255);
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 1px solid gray
+}
+
+th{
+    color: rgb(255, 255, 255);
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: underline;
+    border: 1px solid gray
+}

@@ -1,3 +1,12 @@
+
+#map {
+  height:500px;
+  width: 650px;
+  margin-left: 220px;
+  margin-bottom: 3300px;
+}
+
+
 .header{
     color: rgb(255, 255, 255, 1);
     text-align: center;

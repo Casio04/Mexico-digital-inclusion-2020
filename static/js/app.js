@@ -50,14 +50,9 @@ function general_info(){
         let totmun = d3.max(filtered_data, d=> d.MUN)
 
         // @TODO 
-
-        
         // Insert municipios  - Casio
         // Ranking por estado y porcentaje de inclusión - Casio
         // Foramto a página principal y por estado - Casio
-        // Imágenes - Lalo
-        // Shapefile - Rodri
-        // Cargar base de datos a PostgreSQL / Diagrama- Sam
 
         let selection = d3.select("tbody")
 
@@ -84,6 +79,21 @@ function general_info(){
         </tr>
         `)
         
+        let states = []
+        // Push every state from the data
+        data.forEach(function(state){
+            states.push(state.NOM_ENT)
+        })
+        // Create new set with unique states
+        let unique_states = [...new Set(states)]
+
+        let stateNo = unique_states.indexOf(state) + 1
+        let stateimage = d3.select(".state_img")
+
+        stateimage.html(`
+        <img src="../static/images/${stateNo}.jpg">
+        `)
+
     })
     
 

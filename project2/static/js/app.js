@@ -1,24 +1,3 @@
-let mymap = L.map('map').setView([22.958053112290905, -101.97311862309687], 5);
-
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/dark-v10',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: "pk.eyJ1Ijoicm9kZ3Vhcm5lcm9zIiwiYSI6ImNrazdrcDJkaTAyZjQybm5zdmlyNWl3bDAifQ.VUdkQ9iFNmXi7MHIoxqYeA"
-}).addTo(mymap);
-
-d3.json("../source/19mu.geojson").then(data =>{
-    console.log(data)
-    L.geoJSON(data, {
-        color: "gray",
-        fillColor: "lightblue",
-        weight: 0.5
-    }).addTo(mymap)
-})
-
-
 function init(){
     d3.csv("../data/Censo.csv").then(function(data){
         // Create empty array
@@ -69,8 +48,16 @@ function general_info(){
         let pobmas = Intl.NumberFormat().format(d3.sum(filtered_data, d=> d.POBMAS))
         let vivhab = Intl.NumberFormat().format(d3.sum(filtered_data, d=> d.TVIVPARHAB))
         let totmun = d3.max(filtered_data, d=> d.MUN)
+
         // @TODO 
-        // Insert municipios and total de viviendas
+
+        
+        // Insert municipios  - Casio
+        // Ranking por estado y porcentaje de inclusión - Casio
+        // Foramto a página principal y por estado - Casio
+        // Imágenes - Lalo
+        // Shapefile - Rodri
+        // Cargar base de datos a PostgreSQL / Diagrama- Sam
 
         let selection = d3.select("tbody")
 
@@ -98,8 +85,8 @@ function general_info(){
         `)
         
     })
-
     
+
 }
 
 init()
@@ -107,4 +94,3 @@ init()
 function StateChanged(state){
     general_info()
 }
-

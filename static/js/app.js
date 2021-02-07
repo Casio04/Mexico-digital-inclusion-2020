@@ -4,7 +4,7 @@ function init(){
         let states = []
         // Push every state from the data
         data.forEach(function(state){
-            states.push(state.NOM_ENT)
+            states.push(state.NOMBRE_ENTIDAD)
         })
         // Create new set with unique states
         let unique_states = [...new Set(states)]
@@ -31,7 +31,7 @@ function U_States(){
         let states = []
         // Push every state from the data
         data.forEach(function(state){
-            states.push(state.NOM_ENT)
+            states.push(state.NOMBRE_ENTIDAD)
         })
         // Create new set with unique states
         let unique_states = [...new Set(states)]
@@ -42,13 +42,14 @@ function U_States(){
 function general_info(){
     let state = document.getElementById("stateDrop").value
     d3.csv("../data/Censo.csv").then(function(data){
-        let filtered_data = data.filter(d => d.NOM_ENT == state)
+        
+        let filtered_data = data.filter(d => d.NOMBRE_ENTIDAD == state)
         let pobtot = Intl.NumberFormat().format(d3.sum(filtered_data, d=> d.POBTOT))
         let pobfem = Intl.NumberFormat().format(d3.sum(filtered_data, d=> d.POBFEM))
         let pobmas = Intl.NumberFormat().format(d3.sum(filtered_data, d=> d.POBMAS))
         let vivhab = Intl.NumberFormat().format(d3.sum(filtered_data, d=> d.TVIVPARHAB))
-        let totmun = d3.max(filtered_data, d=> d.MUN)
-
+        let totmun = d3.max(filtered_data, d=> d.MUNICIPIO)
+        
         // @TODO 
         // Insert municipios  - Casio
         // Ranking por estado y porcentaje de inclusión - Casio
@@ -82,16 +83,15 @@ function general_info(){
         let states = []
         // Push every state from the data
         data.forEach(function(state){
-            states.push(state.NOM_ENT)
+            states.push(state.NOMBRE_ENTIDAD)
         })
         // Create new set with unique states
         let unique_states = [...new Set(states)]
 
         let stateNo = unique_states.indexOf(state) + 1
         let stateimage = d3.select(".state_img")
-
         stateimage.html(`
-        <img src="../static/images/${stateNo}.jpg">
+        <img src="../static/images/${stateNo}.jpg" id="stateimg" alt="${stateNo}">
         `)
 
     })

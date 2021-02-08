@@ -1,25 +1,26 @@
 function init(){
-    d3.csv("../data/Censo.csv").then(function(data){
+    d3.json("../api_states").then(function(data){
         // Create empty array
-        let states = []
-        // Push every state from the data
-        data.forEach(function(state){
-            states.push(state.NOMBRE_ENTIDAD)
-        })
-        // Create new set with unique states
-        let unique_states = [...new Set(states)]
+        console.log(data)
+        // let states = []
+        // // Push every state from the data
+        // data.forEach(function(state){
+        //     states.push(state.NOMBRE_ENTIDAD)
+        // })
+        // // Create new set with unique states
+        // let unique_states = [...new Set(states)]
 
-        let selection = d3.select("#stateDrop")
-        .selectAll("option")
-        selection.data(unique_states)
-        .enter()
-        .append("option")
-        .merge(selection)
-        .attr("value", d=>d)
-        .text(d=>d)
-        selection.exit().remove()
-        let firstResult = unique_states[0]
-        StateChanged(firstResult)
+        // let selection = d3.select("#stateDrop")
+        // .selectAll("option")
+        // selection.data(unique_states)
+        // .enter()
+        // .append("option")
+        // .merge(selection)
+        // .attr("value", d=>d)
+        // .text(d=>d)
+        // selection.exit().remove()
+        // let firstResult = unique_states[0]
+        // StateChanged(firstResult)
     })
 }
 

@@ -1471,6 +1471,8 @@ section {
   }
 }
 
+
+
 /* Styles for leaflet */
 
 html, body {
@@ -1502,4 +1504,11 @@ html, body {
   float: left;
   margin-right: 8px;
   opacity: 0.7;
+}
+
+#stateimg{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 25px;
 }

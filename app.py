@@ -35,6 +35,8 @@ def states():
     states_list = []
     for estado in estados:
         states_list.append(estado["features"])
+    
+    client.close()
 
     return json.dumps(list([i[0] for i in states_list]))
 

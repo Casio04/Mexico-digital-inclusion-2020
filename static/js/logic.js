@@ -95,7 +95,7 @@ legend.onAdd = function (map) {
 // Read json data and apply all the functions above to style and give some extra data on the map 
 d3.json("../api_states").then(function(data){
     let states = data
-    
+    console.log(data)
     function style(feature) {
         return {
             fillColor: getColor(feature.properties.INCLUSION_EST),

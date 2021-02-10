@@ -4,12 +4,12 @@ function init(){
 
         // Create empty array
         let states =[]
+
         // Push every state from the data
         data.forEach(function(d){
             states.push(d.properties.NOMBRE_ENTIDAD)
         })
         // Create new set with unique states
-
         let selection = d3.select("#stateDrop")
         .selectAll("option")
         selection.data(data)

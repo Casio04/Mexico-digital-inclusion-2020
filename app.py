@@ -10,33 +10,33 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-# @app.route("/index.html")
-# def index_2():
-#     return render_template("index.html")
+@app.route("/index.html")
+def index_2():
+    return render_template("index.html")
 
-# @app.route("/national.html")
-# def state_info():
-#     return render_template("national.html")
+@app.route("/national.html")
+def state_info():
+    return render_template("national.html")
 
-# @app.route("/statal.html")
-# def statal():
-#     return render_template("statal.html")
+@app.route("/statal.html")
+def statal():
+    return render_template("statal.html")
 
-# @app.route("/about.html")
-# def about():
-#     return render_template("about.html")
+@app.route("/about.html")
+def about():
+    return render_template("about.html")
 
-# @app.route("/api_states")
-# def states():
-#     conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
-#     client = pymongo.MongoClient(conn)
-#     db = client.Inclusion
-#     estados = db.estados.find()
-#     states_list = []
-#     for estado in estados:
-#         states_list.append(estado["features"])
+@app.route("/api_states")
+def states():
+    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
+    client = pymongo.MongoClient(conn)
+    db = client.Inclusion
+    estados = db.estados.find()
+    states_list = []
+    for estado in estados:
+        states_list.append(estado["features"])
 
-#     return json.dumps(list([i[0] for i in states_list]))
+    return json.dumps(list([i[0] for i in states_list]))
 
 if __name__=="__main__":
     app.run(debug=True)

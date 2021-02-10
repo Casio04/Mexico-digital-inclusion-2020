@@ -28,9 +28,9 @@ def about():
 
 @app.route("/api_states")
 def states():
-    conn = 'mongodb://localhost:27017'
+    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
     client = pymongo.MongoClient(conn)
-    db = client.inclusion_digital
+    db = client.Inclusion
     estados = db.estados.find()
     states_list = []
     for estado in estados:

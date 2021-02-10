@@ -7,7 +7,7 @@ Jinja2
 MarkupSafe
 mkl-fft==1.0.6
 mkl-random<=1.0.2
-mkl-service<=2.3.0
+# mkl-service<=2.3.0
 numpy
 pandas
 pymongo==3.11.2

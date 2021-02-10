@@ -16,3 +16,4 @@ pytz
 six
 Werkzeug
 wincertstore==0.2
+gunicorn>=20.0.0

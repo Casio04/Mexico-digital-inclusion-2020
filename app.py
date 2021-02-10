@@ -40,5 +40,19 @@ def states():
 
     return json.dumps(list([i[0] for i in states_list]))
 
+@app.route("/api_municipios")
+def municipalities():
+    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
+    client = pymongo.MongoClient(conn)
+    db = client.Inclusion
+    municipios = db.municipios.find()
+    mun_list = []
+    for mun in municipios:
+        mun_list.append(mun["features"])
+    
+    client.close()
+
+    return json.dumps(list([i[0] for i in mun_list]))
+
 if __name__=="__main__":
     app.run(debug=True)

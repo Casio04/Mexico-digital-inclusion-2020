@@ -1,20 +1,4 @@
-let municipio = document.getElementById("selDataset").value
 
-// function getDashboard(id){
-
-//     // Getting data to make the charts
-//       d3.json("/api_municipios").then((data) => {
-    
-//     // --------------------BAR and Bubble Charts--------------------------------------
-    
-//     // We need to operate in data.sample object and having an idea of the structure
-//     // so as to get the key variables: sample_values, otu_ids and otu_labels
-//             let dat = data["features"];
-//             console.table(dat);
-//     // Get the variables needed to the barchart based on id 
-//             let s =  dat.filter(d => d.NOMBRE_ENTIDAD.toString() === id)[0];
-//             console.log(s)
-          
 // Create map variable with zoom 5 and center in Zacatecas to show all the country
 let mymap = L.map('mapid').setView([22.76843, -102.58141], 5);
 
@@ -115,11 +99,6 @@ legend.onAdd = function (map) {
 // Read json data and apply all the functions above to style and give some extra data on the map 
 d3.json("/api_municipios").then(function(data){
 
-    data.forEach(function(d){
-        if(d.properties.NOMBRE_ENTIDAD===municipio){
-            console.log(municipio)
-        }
-    })
     let states = data
     
     console.log(data)

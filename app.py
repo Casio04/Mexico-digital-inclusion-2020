@@ -10,21 +10,21 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/index.html")
-def index_2():
-    return render_template("index.html")
+# @app.route("/index.html")
+# def index_2():
+#     return render_template("index.html")
 
-@app.route("/national.html")
-def state_info():
-    return render_template("national.html")
+# @app.route("/national.html")
+# def state_info():
+#     return render_template("national.html")
 
-@app.route("/statal.html")
-def statal():
-    return render_template("statal.html")
+# @app.route("/statal.html")
+# def statal():
+#     return render_template("statal.html")
 
-@app.route("/about.html")
-def about():
-    return render_template("about.html")
+# @app.route("/about.html")
+# def about():
+#     return render_template("about.html")
 
 @app.route("/api_states")
 def states():

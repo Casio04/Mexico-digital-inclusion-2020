@@ -8,15 +8,10 @@ client = pymongo.MongoClient(conn)
 db = client.Inclusion
 estados = db.estados.find()
 states_list = []
-for estado in estados:
-    states_list.append(estado["features"])
-
-
 
 municipios = db.municipios.find()
 mun_list = []
-for mun in municipios:
-    mun_list.append(mun["features"])
+
 
 app = Flask(__name__)
 
@@ -53,6 +48,8 @@ def states():
     #     states_list.append(estado["features"])
     
     # client.close()
+    for estado in estados:
+        states_list.append(estado["features"])
     json_states = json.dumps(list([i[0] for i in states_list]))
     return json_states
 
@@ -70,6 +67,8 @@ def municipalities():
     
     # client.close()
     # json_result = json.dumps(list([i[0] for i in mun_list]))
+    for mun in municipios:
+        mun_list.append(mun["features"])
     json_mun = json.dumps(list([i[0] for i in mun_list]))
     return json_mun
 

@@ -55,8 +55,8 @@ def municipalities():
         mun_list.append(mun["features"])
     
     client.close()
-
-    return json.dumps(list([i[0] for i in mun_list]))
+    json_result = json.dumps(list([i[0] for i in mun_list]))
+    return json_result
 
 if __name__=="__main__":
     app.run(debug=True)

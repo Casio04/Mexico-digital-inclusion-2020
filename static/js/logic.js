@@ -1,3 +1,4 @@
+// ---------------------------------------------------Leaflet-----------------------------------------------------------------------
 // Create map variable with zoom 5 and center in Zacatecas to show all the country
 let mymap = L.map('mapid').setView([22.76843, -102.58141], 5);
 
@@ -91,11 +92,47 @@ legend.onAdd = function (map) {
     return div;
 };
 
+// ---------------------------------------------Boxplot----------------------------------------------------------------------------
+//  Create the Traces
+
+let xData = ['Television', 'Radio',
+'Fixed<br>Telphony', 'Mobile<br>Telephony',
+'Pay<br>Television', 'Video Games<br>Console',
+'Internet', 'Streaming<br>Services', 'Computer'];
+
+let colors = ['rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)', 'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)', 'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)', 'rgba(255, 140, 184, 0.5)', 'rgba(79, 90, 117, 0.5)', 'rgba(222, 223, 0, 0.5)'];
+  
+let data1 = [];
+
+// Boxplot layout options
+layout = {
+    yaxis: {
+        autorange: true,
+        showgrid: true,
+        zeroline: true,
+        dtick: 5,
+        gridcolor: 'rgb(255, 255, 255)',
+        gridwidth: 1,
+        boxpoints: "all",
+        zerolinecolor: 'rgb(255, 255, 255)',
+        zerolinewidth: 2
+    },
+    margin: {
+        l: 40,
+        r: 30,
+        b: 80,
+        t: 20
+    },
+    paper_bgcolor: 'rgb(243, 243, 243)',
+    plot_bgcolor: 'rgb(243, 243, 243)',
+    showlegend: false
+};
+
+
 
 // Read json data and apply all the functions above to style and give some extra data on the map 
 d3.json("../api_states").then(function(data){
     let states = data
-    console.log(data)
     function style(feature) {
         return {
             fillColor: getColor(feature.properties.INCLUSION_EST),
@@ -127,6 +164,45 @@ d3.json("../api_states").then(function(data){
     // L.geoJSON(states, {style: style}).addTo(mymap);  
 })
 
-
-
-
+// Municipalities 
+d3.json("../api_municipios").then((data) => {
+    
+  
+    var yData = [
+      data.map(val => val.properties.VPH_TV/val.properties.TVIVPARHAB*100),
+      data.map(val => val.properties.VPH_RADIO/val.properties.TVIVPARHAB*100),
+      data.map(val => val.properties.VPH_TELEF/val.properties.TVIVPARHAB*100),
+      data.map(val => val.properties.VPH_CEL/val.properties.TVIVPARHAB*100),
+      data.map(val => val.properties.VPH_STVP/val.properties.TVIVPARHAB*100),
+      data.map(val => val.properties.VPH_CVJ/val.properties.TVIVPARHAB*100),
+      data.map(val => val.properties.VPH_INTER/val.properties.TVIVPARHAB*100),
+      data.map(val => val.properties.VPH_SPMVPI/val.properties.TVIVPARHAB*100),
+      data.map(val => val.properties.VPH_PC/val.properties.TVIVPARHAB*100),
+        ];
+    
+    
+    
+    for ( let i = 0; i < xData.length; i ++ ) {
+        let result = {
+            type: 'box',
+            y: yData[i],
+            name: xData[i],
+            jitter: 0.5,
+            whiskerwidth: 0.2,
+            fillcolor: colors,
+            marker: {
+                size: 6
+            },
+            line: {
+                width: 3
+            }
+        };
+        data1.push(result);
+    };
+    
+   
+    
+    Plotly.newPlot('plot', data1, layout);
+    
+    });
+    

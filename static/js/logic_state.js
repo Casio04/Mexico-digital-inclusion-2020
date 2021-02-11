@@ -235,7 +235,7 @@ function map_init(){
     d3.json("../api_municipios").then(function(data){
         // Filtering the data by the state selected 
         var states = data.filter(d=>d.properties.ENTIDAD === parseInt(state))  
-        
+        // console.log(d3.sum(states, d=>d.properties.POBTOT))
         var box_states = data.filter(d=>d.properties.ENTIDAD === parseInt(state))  
         // Modifying the variable for the boxplot visualization
         var yData = [
@@ -297,8 +297,10 @@ function map_init(){
         for ( let i = 0; i < xData.length; i ++ ) {
             let result = {
                 type: 'box',
-                y: yData[i],
-                name: xData[i],
+                Y: ["d1","d2","d3"],
+                x: [1,2,3],
+                // y: yData[i],
+                // name: xData[i],
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 fillcolor: colors,

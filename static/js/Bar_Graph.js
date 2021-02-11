@@ -1,9 +1,16 @@
+let state = document.getElementById("stateDrop").value
+    
+
+
+
+let labels = ['Radio', 'Television', 'PC', 'Internet', 'Consola', 'Servicio de Streaming']
+let data = [75, 80, 35, 45, 15, 30]
 
 var ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
-    type: 'horizontalBar',
+    type: 'bar',
     data: {
-        labels: ['Radio', 'Television', 'PC', 'Internet', 'Consola', 'Servicio de Streaming'],
+        labels: labels,
         fontColor: 'white',
         fontSize: 20,
         datasets: [{
@@ -13,7 +20,7 @@ var myChart = new Chart(ctx, {
             minBarLength: 20,
             borderWidth: 20,
             label: '% de Inclusion en "Estado"',
-            data: [75, 80, 35, 45, 15, 30],
+            data: data,
             backgroundColor: [
                 '#0F5257',
                 '#0b3142',
@@ -45,3 +52,14 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+
+// var myChart = new Chart(ctx,{
+//     type: 'Bar',
+//     data: {
+//         labels: labels,
+//         datasets:{
+//             data: data
+//         }
+//     }
+// })

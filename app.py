@@ -3,15 +3,6 @@ import pandas as pd
 import pymongo
 import json
 
-conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
-client = pymongo.MongoClient(conn)
-db = client.Inclusion
-estados = db.estados.find()
-states_list = []
-
-municipios = db.municipios.find()
-mun_list = []
-
 
 app = Flask(__name__)
 
@@ -37,40 +28,35 @@ def about():
 
 @app.route("/api_states")
 def states():
-    # # conn = "mongodb://localhost:27017"
+    conn = "mongodb://localhost:27017"
     # conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
-    # client = pymongo.MongoClient(conn)
+    client = pymongo.MongoClient(conn)
     # db = client.Inclusion
-    # # db = client.inclusion_digital
-    # estados = db.estados.find()
-    # states_list = []
-    # for estado in estados:
-    #     states_list.append(estado["features"])
-    
-    # client.close()
+    db = client.inclusion_digital
+    estados = db.estados.find()
+    states_list = []
     for estado in estados:
         states_list.append(estado["features"])
-    json_states = json.dumps(list([i[0] for i in states_list]))
-    return json_states
+    
+    client.close()
+
+    return json.dumps(list([i[0] for i in states_list]))
 
 @app.route("/api_municipios")
 def municipalities():
-    # # conn = "mongodb://localhost:27017"
+    conn = "mongodb://localhost:27017"
     # conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
-    # client = pymongo.MongoClient(conn)
+    client = pymongo.MongoClient(conn)
     # db = client.Inclusion
-    # # db = client.inclusion_digital
-    # municipios = db.municipios.find()
-    # mun_list = []
-    # for mun in municipios:
-    #     mun_list.append(mun["features"])
-    
-    # client.close()
-    # json_result = json.dumps(list([i[0] for i in mun_list]))
+    db = client.inclusion_digital
+    municipios = db.municipios.find()
+    mun_list = []
     for mun in municipios:
         mun_list.append(mun["features"])
-    json_mun = json.dumps(list([i[0] for i in mun_list]))
-    return json_mun
+    
+    client.close()
+    json_result = json.dumps(list([i[0] for i in mun_list]))
+    return json_result
 
 if __name__=="__main__":
     app.run(debug=True)

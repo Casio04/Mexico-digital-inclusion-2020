@@ -297,10 +297,10 @@ function map_init(){
         for ( let i = 0; i < xData.length; i ++ ) {
             let result = {
                 type: 'box',
-                Y: ["d1","d2","d3"],
-                x: [1,2,3],
-                // y: yData[i],
-                // name: xData[i],
+                // Y: ["d1","d2","d3"],
+                // x: [1,2,3],
+                y: yData[i],
+                name: xData[i],
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 fillcolor: colors,

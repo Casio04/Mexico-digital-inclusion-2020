@@ -1,6 +1,6 @@
 // ---------------------------------------------------Leaflet-----------------------------------------------------------------------
 // Create map variable with zoom 5 and center in Zacatecas to show all the country
-let mymap = L.map('mapid').setView([22.76843, -102.58141], 5);
+let mymap = L.map('map').setView([22.76843, -102.58141], 5);
 
 // Create layer for basic map with gray coloring
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {

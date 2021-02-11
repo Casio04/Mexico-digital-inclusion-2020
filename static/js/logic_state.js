@@ -1,3 +1,15 @@
+
+let celular  = 0
+let internet  = 0
+let PC  = 0
+let radio  = 0
+let tv  = 0
+let consola  = 0
+let streaming  = 0
+let tvpaga  = 0
+let telefono  = 0
+let viviendas = 0
+
 // ----------------------------------------------------------------------------------------------------------------------------------
 // Map layer
 // Here we declare the map variable in the center of Mexico to show the whole country
@@ -83,6 +95,53 @@ function general_info(a){
                 <td>${ranking}</td>
                 </tr>
                 `)
+
+                celular = parseInt(d.properties.VPH_CEL) /parseInt(d.properties.TVIVPARHAB) *100
+                radio = parseInt(d.properties.VPH_RADIO) / parseInt(d.properties.TVIVPARHAB)*100
+                internet = parseInt(d.properties.VPH_INTER) / parseInt(d.properties.TVIVPARHAB) *100
+                pc = parseInt(d.properties.VPH_PC) / parseInt(d.properties.TVIVPARHAB) *100
+                tvpaga = parseInt(d.properties.VPH_STVP) / parseInt(d.properties.TVIVPARHAB) *100
+                consola = parseInt(d.properties.VPH_CVJ) / parseInt(d.properties.TVIVPARHAB) *100
+                streaming = parseInt(d.properties.VPH_SPMVPI) / parseInt(d.properties.TVIVPARHAB) *100
+                telefono = parseInt(d.properties.VPH_TELEF) / parseInt(d.properties.TVIVPARHAB) *100
+                tv = parseInt(d.properties.VPH_TV) / parseInt(d.properties.TVIVPARHAB) *100 
+
+                let labels = ["Televisión","Internet","Celular","PC","TV de paga","Consola de Videojuegos","Servicios de streaming", "Radio", "Teléfono"]
+                let data = [tv, internet, celular, pc, tvpaga, consola, streaming, radio, telefono]
+                
+                let colors = ["#392C23","#6D3919","#A05A15","#BF6914","#E27532","#E3731A","#E58117","#E79C58","#ECB973"]
+                var ctx = document.getElementById('myChart');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        fontColor: 'white',
+                        fontSize: 20,
+                        datasets: [{
+                            barPercentage: 0.5,
+                            barThickness: 50,
+                            maxBarThickness: 100,
+                            minBarLength: 20,
+                            borderWidth: 20,
+                            // label: `'% de Inclusion en ${d.properties.NOMBRE_ENTIDAD}`,
+                            data: data,
+                            backgroundColor: colors,
+                            borderColor: colors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    suggestedMin: 0,
+                                    suggestedMax: 100,
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });  
             }
         })
         
@@ -187,8 +246,6 @@ legend.onAdd = function (map) {
 // Assigning colors
 let colors = ['rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)', 'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)', 'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)', 'rgba(255, 140, 184, 0.5)', 'rgba(79, 90, 117, 0.5)', 'rgba(222, 223, 0, 0.5)'];
 
-let data1 = [];
-
 // Creating layout options
 layout = {
     yaxis: {
@@ -219,9 +276,14 @@ var xData = ['Television', 'Radio',
         'Pay<br>Television', 'Video Games<br>Console',
         'Internet', 'Streaming<br>Services', 'Computer'];
 
+// ---------------------------------------------Graph-------------------------------------------------------------------------------------
+
+
+
 // ---------------------------------------------Leaflet function-------------------------------------------------------------------------------------
 // Main function to read the data and call all the above functions for dynamic update
 function map_init(){
+    let plotly = d3.select("#plot").html('')
     // If a layer is already added and the user picks another state, the past layer will be gone and the map will be centered again
     try{
         mymap.removeLayer(geojson)
@@ -233,9 +295,9 @@ function map_init(){
     let state = document.getElementById("stateDrop").value
     
     d3.json("../api_municipios").then(function(data){
+        let data1 = []
         // Filtering the data by the state selected 
-        var states = data.filter(d=>d.properties.ENTIDAD === parseInt(state))  
-        // console.log(d3.sum(states, d=>d.properties.POBTOT))
+        var states = data.filter(d=>d.properties.ENTIDAD === parseInt(state)) 
         var box_states = data.filter(d=>d.properties.ENTIDAD === parseInt(state))  
         // Modifying the variable for the boxplot visualization
         var yData = [
@@ -249,6 +311,7 @@ function map_init(){
             box_states.map(val => val.properties.VPH_SPMVPI/val.properties.TVIVPARHAB*100),
             box_states.map(val => val.properties.VPH_PC/val.properties.TVIVPARHAB*100),
         ];
+        console.log(box_states)
         // Getting the type of polygon from the selected data
         let type = states[0].geometry.type
         
@@ -314,7 +377,8 @@ function map_init(){
             data1.push(result);
         };
         
-        Plotly.newPlot('plot', data1, layout);
+            Plotly.newPlot('plot', data1, layout);
+              
 
         console.log("ok")
     })
@@ -322,11 +386,14 @@ function map_init(){
 
 // Initializing webpage
 init()
+function graph(){
 
-
+    
+}
 // Function that calls the other functions every time a state is selected
 function stateChanged(result){
     general_info(result)
     map_init()
+    graph()
 }
 

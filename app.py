@@ -28,9 +28,11 @@ def about():
 
 @app.route("/api_states")
 def states():
-    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
+    conn = "mongodb://localhost:27017"
+    # conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
     client = pymongo.MongoClient(conn)
-    db = client.Inclusion
+    # db = client.Inclusion
+    db = client.inclusion_digital
     estados = db.estados.find()
     states_list = []
     for estado in estados:
@@ -42,9 +44,11 @@ def states():
 
 @app.route("/api_municipios")
 def municipalities():
-    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
+    conn = "mongodb://localhost:27017"
+    # conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
     client = pymongo.MongoClient(conn)
-    db = client.Inclusion
+    # db = client.Inclusion
+    db = client.inclusion_digital
     municipios = db.municipios.find()
     mun_list = []
     for mun in municipios:

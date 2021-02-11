@@ -1,8 +1,9 @@
+// ----------------------------------------------------------------------------------------------------------------------------------
+// Map layer
+// Here we declare the map variable in the center of Mexico to show the whole country
+let mymap = L.map('mapid').setView([22.849294981948546, -102.68634458318647], 5)
 
-// Create map variable with zoom 5 and center in Zacatecas to show all the country
-let mymap = L.map('mapid').setView([22.76843, -102.58141], 5);
-
-// Create layer for basic map with gray coloring
+// We add the basic tileLayer from mapbox
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -12,9 +13,93 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: API_KEY
 }).addTo(mymap);
 
-// });
+// ----------------------------------------------------------------------------------------------------------------------------------
 
+// Initialize function
+function init(){
+    // Reading data from API
+    d3.json("../api_states").then(function(data){
 
+        // Create empty array
+        let states =[]
+
+        // Push every state from the data
+        data.forEach(function(d){
+            states.push(d.properties.NOMBRE_ENTIDAD)
+        })
+        // Insert states into dropdown
+        let selection = d3.select("#stateDrop")
+        .selectAll("option")
+        selection.data(data)
+        .enter()
+        .append("option")
+        .merge(selection)
+        .attr("value", d =>d.properties.ENTIDAD)
+        .text(d=>d.properties.NOMBRE_ENTIDAD)
+        selection.exit().remove()
+        // Getting the first state in the arrawy and calling the function to update by default this value on the first loaf
+        let firstResult = states[0]
+        stateChanged(firstResult)
+    })
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+// Function used to display general information and state image
+function general_info(a){
+    // Getting the number of entity selected
+    let state = document.getElementById("stateDrop").value
+    // Reading data from API
+    d3.json("../api_states").then(function(data){
+        // Iterating through each document to filter the information matching the state selected
+        data.forEach(function(d){
+            if(d.properties.ENTIDAD === parseInt(state)){
+                let pobtot = Intl.NumberFormat().format(d.properties.POBTOT)
+                let pobfem = Intl.NumberFormat().format(d.properties.POBFEM)
+                let pobmas = Intl.NumberFormat().format(d.properties.POBMAS)
+                let vivhab = Intl.NumberFormat().format(d.properties.TVIVPARHAB)
+                let ranking = Intl.NumberFormat().format(d.properties.RANKING)
+                
+                // Inserting HTML code with d3 to fill the table
+                let selection = d3.select("tbody")
+                selection.html(`
+                <tr>
+                <td>Total population</td>
+                <td>${pobtot}</td>
+                </tr>
+                <tr>
+                <td>Women's population</td>
+                <td>${pobfem}</td>
+                </tr>
+                <tr>
+                <td>Men's population</td>
+                <td>${pobmas}</td>
+                </tr>
+                <tr>
+                <td>Inhabited dwellings</td>
+                <td>${vivhab}</td>
+                </tr>
+                <tr>
+                <td>National Ranking</td>
+                <td>${ranking}</td>
+                </tr>
+                `)
+            }
+        })
+        
+        // loading image to the already declared class in the html 
+        let stateimage = d3.select(".state_img")
+        stateimage.html(`
+        <img src="../static/images/${state}.jpg" id="stateimg" alt="${state}" data-aos="fade-up">`)
+
+    })
+    
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+
+// Functions and parameters for the Leaflet visualization
+// Regex function to give format to the numbers displayed
 function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
@@ -58,6 +143,7 @@ function resetHighlight(e) {
     info.update()
 }
 
+// Adding a cutsom information control to the upper right corner
 var info = L.control();
 
 info.onAdd = function (map) {
@@ -75,6 +161,7 @@ info.update = function (props) {
 };
 
 
+// Adding the legend control to show the meaning of each color
 var legend = L.control({position: 'bottomleft'});
 
 legend.onAdd = function (map) {
@@ -95,44 +182,77 @@ legend.onAdd = function (map) {
     return div;
 };
 
+// ----------------------------------------------------------------------------------------------------------------------------------
 
-// Read json data and apply all the functions above to style and give some extra data on the map 
-d3.json("/api_municipios").then(function(data){
-
-    let states = data
-    
-    console.log(data)
-    function style(feature) {
-        return {
-            fillColor: getColor(feature.properties.INCLUSION_MUN),
-            weight: 1,
-            opacity: 1,
-            color: 'white',
-            fillOpacity: 0.8
-        };
+// Main function to read the data and call all the above functions for dynamic update
+function map_init(){
+    // If a layer is already added and the user picks another state, the past layer will be gone and the map will be centered again
+    try{
+        mymap.removeLayer(geojson)
+        mymap.setView([22.849294981948546, -102.68634458318647], 5)
     }
+    catch{}
 
-    function onEachFeature(feature, layer) {
-        layer.on({
-            mouseover: highlightFeature,
-            mouseout: resetHighlight,
-            click: zoomToFeature
-        });
-    }
-
-    // method that we will use to update the control based on feature properties passed
-   
+    // Getting the state value and reading the data
+    let state = document.getElementById("stateDrop").value
     
-    geojson = L.geoJson(states, {
-        style: style,
-        onEachFeature: onEachFeature
-    }).addTo(mymap);
+    d3.json("../api_municipios").then(function(data){
+        // Filtering the data by the state selected 
+        var states = data.filter(d=>d.properties.ENTIDAD === parseInt(state))  
+        // Getting the type of polygon from the selected data
+        let type = states[0].geometry.type
+        
+        // Obtaining the first pair of coordinates from the selected state so we can position our map there.
+        // Depending on the type of polygon, the retrieve is made differently
+       if(type === "Polygon"){
+        var coords = data.filter(d=>d.properties.ENTIDAD === parseInt(state))[0].geometry.coordinates[0][0]
+       }else{
+        // Type: Multipolygon
+        var coords = data.filter(d=>d.properties.ENTIDAD === parseInt(state))[0].geometry.coordinates[0][0][0]
+       }
+       
+        // Update the center of the map with more zoom
+       mymap.setView(coords.reverse() ,6, animate = true)  
+        
+    //    Adding style to the choroplet layer
+        function style(feature) {
+            return {
+                fillColor: getColor(feature.properties.INCLUSION_MUN),
+                weight: 1,
+                opacity: 1,
+                color: 'white',
+                fillOpacity: 0.8
+            };
+        }
+    
+        // Adding behaviour to the map by calling the previously defined functinos
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: zoomToFeature
+            });
+        }     
+        
+        // Adding the geojson layer with the choroplet options
+        geojson = L.geoJson(states, {
+            style: style,
+            onEachFeature: onEachFeature
+        }).addTo(mymap);
+    
+        info.addTo(mymap);
+        legend.addTo(mymap);
+        console.log("ok")
+    })
+}
 
-    info.addTo(mymap);
-    legend.addTo(mymap);
-    // L.geoJSON(states, {style: style}).addTo(mymap);  
-})
+// Initializing webpage
+init()
 
 
-
+// Function that calls the other functions every time a state is selected
+function stateChanged(result){
+    general_info(result)
+    map_init()
+}
 

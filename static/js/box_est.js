@@ -3,13 +3,13 @@
 d3.json("/api_municipios").then((data) => {
     //  Create the Traces
       console.log(data)
-      // let state = document.getElementById("stateDrop").value
-      let dat = data["features"];
+      let state = document.getElementById("stateDrop").value
+      let dat = data;
       console.log(dat)
   
       let states = dat.filter(d=>d.properties.ENTIDAD === parseInt(state))
    
-       let firstResult = states[0]
+        let firstResult = states[0]
             StateChanged(firstResult)
   
   var xData = ['Television', 'Radio',

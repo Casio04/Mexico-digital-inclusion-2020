@@ -26,11 +26,11 @@ function init(){
 
 function general_info(a){
     let state = document.getElementById("stateDrop").value
-    console.log(state)
+    
     d3.json("../api_states").then(function(data){
         
         data.forEach(function(d){
-            console.log(d.properties.ENTIDAD)
+            
             if(d.properties.ENTIDAD === parseInt(state)){
                 let pobtot = Intl.NumberFormat().format(d.properties.POBTOT)
                 let pobfem = Intl.NumberFormat().format(d.properties.POBFEM)

@@ -1,11 +1,10 @@
 // BOX PLOT MUNICIPIOS ASOCIADA A statal.html
 
-d3.json("/api_municipios").then((data) => {
+d3.json("../api_municipios").then((data) => {
     //  Create the Traces
-      console.log(data)
-      // let state = document.getElementById("stateDrop").value
-      let dat = data["features"];
-      console.log(dat)
+      
+      let state = document.getElementById("stateDrop").value
+      let dat = data;
   
       let states = dat.filter(d=>d.properties.ENTIDAD === parseInt(state))
    

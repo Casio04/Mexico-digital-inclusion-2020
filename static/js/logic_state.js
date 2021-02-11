@@ -123,7 +123,7 @@ function general_info(a){
                             maxBarThickness: 100,
                             minBarLength: 20,
                             borderWidth: 20,
-                            // label: `'% de Inclusion en ${d.properties.NOMBRE_ENTIDAD}`,
+                            label: '',
                             data: data,
                             backgroundColor: colors,
                             borderColor: colors,

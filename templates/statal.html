@@ -32,6 +32,8 @@
   crossorigin=""/>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   <!-- =======================================================
   * Template Name: Day - v2.2.1
   * Template URL: https://bootstrapmade.com/day-multipurpose-html-template-for-free/
@@ -84,7 +86,7 @@
               <h3>Select a state</h3>
               <ul>
                 <li class="nav-item">
-                  <select id="stateDrop" onchange=" optionChanged(this.value)"></select>
+                  <select id="stateDrop" onchange=" stateChanged(this.value)"></select>
                 </select>
               </li>
               </ul>
@@ -112,15 +114,17 @@
 
       </div>
     </section><!-- End About Section -->
+    <div class="container">
     <div class="row justify-content-end">
-      <div class="col-4">
+      <div class="col-6">
         <div class="card" style="width: 35rem;">
           <h5 class="card-header"><b>Gráfica de eduardo</b></h5>
           <div class="card-body">
+            <canvas id="myChart" style="position: relative; height: 500%; width:100%; background-color: white; "></canvas>
           </div>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-6">
         <div class="card" style="width: 35rem;">
           <h5 class="card-header"><b>Distribution of households with digital services (%)</b></h5>
           <div class="stateimg" id = "plot">
@@ -128,6 +132,7 @@
         </div> 
       </div>
     </div>    
+  </div>
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->  <!-- ======= Footer ======= -->
@@ -194,7 +199,7 @@
   <!-- Local JS files -->
   <script src="../static/js/config.js"></script>
   <script src="../static/js/logic_state.js"></script>
-
+  <script src="../static/js/Bar_Graph.js"></script>
 </body>
 
 </html>

@@ -30,6 +30,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
   crossorigin=""/>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
   <!-- =======================================================
   * Template Name: Day - v2.2.1
   * Template URL: https://bootstrapmade.com/day-multipurpose-html-template-for-free/
@@ -110,8 +112,22 @@
 
       </div>
     </section><!-- End About Section -->
-
-    
+    <div class="row justify-content-end">
+      <div class="col-4">
+        <div class="card" style="width: 35rem;">
+          <h5 class="card-header"><b>Gráfica de eduardo</b></h5>
+          <div class="card-body">
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card" style="width: 35rem;">
+          <h5 class="card-header"><b>Distribution of households with digital services (%)</b></h5>
+          <div class="stateimg" id = "plot">
+          </div>
+        </div> 
+      </div>
+    </div>    
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->  <!-- ======= Footer ======= -->
@@ -179,6 +195,7 @@
   <script src="../static/js/config.js"></script>
   <script src="../static/js/app.js"></script>
   <script src="../static/js/logic_state.js"></script>
+  <script src="../static/js/box_mun.js"></script>
 
 </body>
 

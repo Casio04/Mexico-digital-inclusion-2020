@@ -29,27 +29,29 @@ def about():
 @app.route("/api_states")
 def states():
     # conn = "mongodb://localhost:27017"
-    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
-    # client = pymongo.MongoClient(conn)
+    conn = 'mongodb+srv://CarlosCasio:Prueba@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
+    client = pymongo.MongoClient(conn)
     db = client.Inclusion
-    db = client.inclusion_digital
-    estados = db.estados.find()
+    # db = client.inclusion_digital
+    estados = db.estados.find().limit(1)
+    # print(estados)
     states_list = []
     for estado in estados:
         states_list.append(estado["features"])
-    
-    client.close()
 
+    client.close()
+    # return json.dumps(list(estados))
     return json.dumps(list([i[0] for i in states_list]))
 
 @app.route("/api_municipios")
 def municipalities():
-    # conn = "mongodb://localhost:27017"
-    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
+    
+    
+    conn = 'mongodb+srv://CarlosCasio:Prueba@censuscluster.yunqv.mongodb.net/Inclusion?retryWrites=true&w=majority'
     client = pymongo.MongoClient(conn)
     db = client.Inclusion
     # db = client.inclusion_digital
-    municipios = db.municipios.find()
+    municipios = db.municipios.find().limit(1)
     mun_list = []
     for mun in municipios:
         mun_list.append(mun["features"])
@@ -59,4 +61,4 @@ def municipalities():
     return json_result
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run()

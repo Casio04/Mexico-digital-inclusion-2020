@@ -49,7 +49,7 @@ def municipalities():
     client = pymongo.MongoClient(conn)
     db = client.censoMunicipio
     # db = client.inclusion_digital
-    municipios = db.municipios.find().limit(5)
+    municipios = db.municipios.find()
     mun_list = []
     for mun in municipios:
         mun_list.append(mun["features"])

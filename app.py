@@ -45,9 +45,9 @@ def states():
 def municipalities():
     
     
-    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/censo?retryWrites=true&w=majority'
+    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/censoMunicipio?retryWrites=true&w=majority'
     client = pymongo.MongoClient(conn)
-    db = client.censo
+    db = client.censoMunicipio
     # db = client.inclusion_digital
     municipios = db.municipios.find().limit(5)
     mun_list = []

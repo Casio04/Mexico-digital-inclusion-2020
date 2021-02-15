@@ -43,17 +43,31 @@ def states():
 
 @app.route("/api_municipios")
 def municipalities():
+    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/censoMunicipio?retryWrites=true&w=majority'
+    client = pymongo.MongoClient(conn)
+    db = client.censoMunicipio
+    # db = client.inclusion_digital
+    municipios = db.municipios.find({},{'coordinates': False})
+    mun_list = []
+    for mun in municipios:
+        mun_list.append(mun["features"])
     
-    
+    client.close()
+    json_result = json.dumps(list([i[0] for i in mun_list]))
+    return json_result
+
+@app.route("/api_municipios_no_coords")
+def no_coords():
     conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/censoMunicipio?retryWrites=true&w=majority'
     client = pymongo.MongoClient(conn)
     db = client.censoMunicipio
     # db = client.inclusion_digital
     municipios = db.municipios.find()
     mun_list = []
-    for mun in municipios:
+    for iteration, mun in enumerate(municipios):
         mun_list.append(mun["features"])
-    
+        del mun_list[iteration][0]["geometry"]
+
     client.close()
     json_result = json.dumps(list([i[0] for i in mun_list]))
     return json_result

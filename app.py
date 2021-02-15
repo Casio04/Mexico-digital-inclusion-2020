@@ -1,10 +1,22 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
+from flask.json import JSONEncoder
 import pandas as pd
 import pymongo
 import json
+from bson import json_util
+from mongoengine.base import BaseDocument
+from mongoengine.queryset.base import BaseQuerySet
 
+class MongoEngineJSONEncoder(JSONEncoder):
+    def default(self,obj):
+        if isinstance(obj,BaseDocument):
+            return json_util._json_convert(obj.to_mongo())
+        elif isinstance(obj,BaseQuerySet):
+            return json_util._json_convert(obj.as_pymongo())
+        return JSONEncoder.default(self, obj)
 
 app = Flask(__name__)
+app.json_encoder = MongoEngineJSONEncoder
 
 @app.route("/")
 def index():
@@ -58,19 +70,17 @@ def municipalities():
 
 @app.route("/api_municipios_no_coords")
 def no_coords():
-    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/censoMunicipio?retryWrites=true&w=majority'
+    conn = 'mongodb+srv://CarlosCasio:Casio@censuscluster.yunqv.mongodb.net/cordlessMun?retryWrites=true&w=majority'
     client = pymongo.MongoClient(conn)
-    db = client.censoMunicipio
-    # db = client.inclusion_digital
-    municipios = db.municipios.find()
+    db = client.cordlessMun
+    municipios = db.municipios.find({},{'_id': False})
+    # print(estados)
     mun_list = []
-    for iteration, mun in enumerate(municipios):
-        mun_list.append(mun["features"])
-        del mun_list[iteration][0]["geometry"]
+    for mun in municipios:
+        mun_list.append(mun)
 
-    client.close()
-    json_result = json.dumps(list([i[0] for i in mun_list]))
-    return json_result
-
+    return json.dumps(mun_list  )
+        
 if __name__=="__main__":
+    app.debug = True
     app.run()

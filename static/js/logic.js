@@ -167,17 +167,16 @@ d3.json("../api_states").then(function(data){
 // Municipalities 
 d3.json("../api_municipios_no_coords").then((data) => {
     
-  console.log(data)
     var yData = [
-      data.map(val => val.properties.VPH_TV/val.properties.TVIVPARHAB*100),
-      data.map(val => val.properties.VPH_RADIO/val.properties.TVIVPARHAB*100),
-      data.map(val => val.properties.VPH_TELEF/val.properties.TVIVPARHAB*100),
-      data.map(val => val.properties.VPH_CEL/val.properties.TVIVPARHAB*100),
-      data.map(val => val.properties.VPH_STVP/val.properties.TVIVPARHAB*100),
-      data.map(val => val.properties.VPH_CVJ/val.properties.TVIVPARHAB*100),
-      data.map(val => val.properties.VPH_INTER/val.properties.TVIVPARHAB*100),
-      data.map(val => val.properties.VPH_SPMVPI/val.properties.TVIVPARHAB*100),
-      data.map(val => val.properties.VPH_PC/val.properties.TVIVPARHAB*100),
+      data.map(val => val.VPH_TV/val.TVIVPARHAB*100),
+      data.map(val => val.VPH_RADIO/val.TVIVPARHAB*100),
+      data.map(val => val.VPH_TELEF/val.TVIVPARHAB*100),
+      data.map(val => val.VPH_CEL/val.TVIVPARHAB*100),
+      data.map(val => val.VPH_STVP/val.TVIVPARHAB*100),
+      data.map(val => val.VPH_CVJ/val.TVIVPARHAB*100),
+      data.map(val => val.VPH_INTER/val.TVIVPARHAB*100),
+      data.map(val => val.VPH_SPMVPI/val.TVIVPARHAB*100),
+      data.map(val => val.VPH_PC/val.TVIVPARHAB*100),
         ];
     
     

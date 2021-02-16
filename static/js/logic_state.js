@@ -1,3 +1,5 @@
+console.log(screen.width)
+console.log(screen.height)
 let celular  = 0
 let internet  = 0
 let PC  = 0
@@ -119,7 +121,7 @@ function general_info(a){
                         fontSize: 20,
                         datasets: [{
                             barPercentage: 0.5,
-                            barThickness: 50,
+                            barThickness: screen.width / 50,
                             maxBarThickness: 100,
                             minBarLength: 20,
                             borderWidth: 20,
@@ -131,6 +133,7 @@ function general_info(a){
                         }]
                     },
                     options: {
+                        responsive:true,
                         scales: {
                             yAxes: [{
                                 ticks: {

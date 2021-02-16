@@ -207,11 +207,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card{
- 
   margin: 0 auto; /* Added */
   float: none; /* Added */
   margin-bottom: 30px; /* Added */
 }
+
+@media(max-width:600px){
+  .card{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    
+  }
+}
+
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/

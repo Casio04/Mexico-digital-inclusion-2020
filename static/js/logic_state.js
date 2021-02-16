@@ -1,4 +1,3 @@
-
 let celular  = 0
 let internet  = 0
 let PC  = 0
@@ -9,6 +8,7 @@ let streaming  = 0
 let tvpaga  = 0
 let telefono  = 0
 let viviendas = 0
+
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 // Map layer
@@ -106,10 +106,10 @@ function general_info(a){
                 telefono = parseInt(d.properties.VPH_TELEF) / parseInt(d.properties.TVIVPARHAB) *100
                 tv = parseInt(d.properties.VPH_TV) / parseInt(d.properties.TVIVPARHAB) *100 
 
-                let labels = ["Televisión","Internet","Celular","PC","TV de paga","Consola de Videojuegos","Servicios de streaming", "Radio", "Teléfono"]
-                let data = [tv, internet, celular, pc, tvpaga, consola, streaming, radio, telefono]
+                let labels = ["Television","Radio", "Fixed Telephone","Cellphone","Paid TV","Videogame consoles","Internet","Streaming Services","PC"]
+                let data = [tv, radio, telefono, celular, tvpaga, consola, internet, streaming, pc]
                 
-                let colors = ["#392C23","#6D3919","#A05A15","#BF6914","#E27532","#E3731A","#E58117","#E79C58","#ECB973"]
+                let colors = ['rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)', 'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)', 'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)', 'rgba(255, 140, 184, 0.5)', 'rgba(79, 90, 117, 0.5)', 'rgba(222, 223, 0, 0.5)'];
                 var ctx = document.getElementById('myChart');
                 var myChart = new Chart(ctx, {
                     type: 'bar',
@@ -246,6 +246,73 @@ legend.onAdd = function (map) {
 // Assigning colors
 let colors = ['rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)', 'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)', 'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)', 'rgba(255, 140, 184, 0.5)', 'rgba(79, 90, 117, 0.5)', 'rgba(222, 223, 0, 0.5)'];
 
+// ---------------------------------------------Leaflet function-------------------------------------------------------------------------------------
+// Main function to read the data and call all the above functions for dynamic update
+function map_init(){
+   
+    // If a layer is already added and the user picks another state, the past layer will be gone and the map will be centered again
+    try{
+        mymap.removeLayer(geojson)
+        mymap.setView([22.849294981948546, -102.68634458318647], 5)
+    }
+    catch{}
+
+    // Getting the state value and reading the data
+    let state = document.getElementById("stateDrop").value
+    let url = ("../api_municipios/" + state)
+    d3.json(url).then(function(data){
+        
+        // Getting the type of polygon from the selected data
+        let type = data[0].features[0].geometry.type
+        
+        // Obtaining the first pair of coordinates from the selected state so we can position our map there.
+        // Depending on the type of polygon, the retrieve is made differently
+       if(type === "Polygon"){
+        var coords = data[0].features[0].geometry.coordinates[0][0]
+       }else{
+        // Type: Multipolygon
+        var coords = data[0].features[0].geometry.coordinates[0][0][0]
+       }
+        let rev = coords.reverse()
+        // Update the center of the map with more zoom
+       mymap.setView(rev,6, animate = true)  
+        
+        // Adding style to the choroplet layer
+        function style(feature) {
+            return {
+                fillColor: getColor(feature.properties.INCLUSION_MUN),
+                weight: 1,
+                opacity: 1,
+                color: 'white',
+                fillOpacity: 0.8
+            };
+        }
+    
+        // Adding behaviour to the map by calling the previously defined functinos
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: zoomToFeature
+            });
+        }     
+        
+        // Adding the geojson layer with the choroplet options
+        geojson = L.geoJson(data, {
+            style: style,
+            onEachFeature: onEachFeature
+        }).addTo(mymap);
+    
+        info.addTo(mymap);
+        legend.addTo(mymap);
+              
+        console.log("ok")
+        
+    })
+    
+}
+
+// ----------------------------------------------Plotly function-------------------------------------------------------------------
 // Creating layout options
 layout = {
     yaxis: {
@@ -272,96 +339,37 @@ layout = {
 
 //  Create the Traces
 var xData = ['Television', 'Radio',
-        'Fixed<br>Telphony', 'Mobile<br>Telephony',
-        'Pay<br>Television', 'Video Games<br>Console',
+        'Fixed<br>Telphone', 'Cellphone',
+        'Paid TV', 'Video Games<br>Console',
         'Internet', 'Streaming<br>Services', 'Computer'];
-
-// ---------------------------------------------Graph-------------------------------------------------------------------------------------
-
-
-
-// ---------------------------------------------Leaflet function-------------------------------------------------------------------------------------
-// Main function to read the data and call all the above functions for dynamic update
-function map_init(){
-    let plotly = d3.select("#plot").html('')
-    // If a layer is already added and the user picks another state, the past layer will be gone and the map will be centered again
-    try{
-        mymap.removeLayer(geojson)
-        mymap.setView([22.849294981948546, -102.68634458318647], 5)
-    }
-    catch{}
-
-    // Getting the state value and reading the data
-    let state = document.getElementById("stateDrop").value
+function plot(){
+    d3.json("../api_municipios_no_coords").then(function(data){
+        // Reseting the plot 
+        let plotly = d3.select("#plot").html('')
+        // Filtering the data by state needed
+        let state = document.getElementById("stateDrop").value;
+        
+        
+        let entity = (data.filter(d=>d.ENTIDAD === parseInt(state)))
     
-    d3.json("../api_municipios").then(function(data){
-        let data1 = []
-        // Filtering the data by the state selected 
-        var states = data.filter(d=>d.properties.ENTIDAD === parseInt(state)) 
-        var box_states = data.filter(d=>d.properties.ENTIDAD === parseInt(state))  
-        // Modifying the variable for the boxplot visualization
+        // Creating the array of arrays for each box
         var yData = [
-            box_states.map(val => val.properties.VPH_TV/val.properties.TVIVPARHAB*100),
-            box_states.map(val => val.properties.VPH_RADIO/val.properties.TVIVPARHAB*100),
-            box_states.map(val => val.properties.VPH_TELEF/val.properties.TVIVPARHAB*100),
-            box_states.map(val => val.properties.VPH_CEL/val.properties.TVIVPARHAB*100),
-            box_states.map(val => val.properties.VPH_STVP/val.properties.TVIVPARHAB*100),
-            box_states.map(val => val.properties.VPH_CVJ/val.properties.TVIVPARHAB*100),
-            box_states.map(val => val.properties.VPH_INTER/val.properties.TVIVPARHAB*100),
-            box_states.map(val => val.properties.VPH_SPMVPI/val.properties.TVIVPARHAB*100),
-            box_states.map(val => val.properties.VPH_PC/val.properties.TVIVPARHAB*100),
-        ];
-        console.log(box_states)
-        // Getting the type of polygon from the selected data
-        let type = states[0].geometry.type
+            entity.map(val => val.VPH_TV/val.TVIVPARHAB*100),
+            entity.map(val => val.VPH_RADIO/val.TVIVPARHAB*100),
+            entity.map(val => val.VPH_TELEF/val.TVIVPARHAB*100),
+            entity.map(val => val.VPH_CEL/val.TVIVPARHAB*100),
+            entity.map(val => val.VPH_STVP/val.TVIVPARHAB*100),
+            entity.map(val => val.VPH_CVJ/val.TVIVPARHAB*100),
+            entity.map(val => val.VPH_INTER/val.TVIVPARHAB*100),
+            entity.map(val => val.VPH_SPMVPI/val.TVIVPARHAB*100),
+            entity.map(val => val.VPH_PC/val.TVIVPARHAB*100),
+        ]
         
-        // Obtaining the first pair of coordinates from the selected state so we can position our map there.
-        // Depending on the type of polygon, the retrieve is made differently
-       if(type === "Polygon"){
-        var coords = data.filter(d=>d.properties.ENTIDAD === parseInt(state))[0].geometry.coordinates[0][0]
-       }else{
-        // Type: Multipolygon
-        var coords = data.filter(d=>d.properties.ENTIDAD === parseInt(state))[0].geometry.coordinates[0][0][0]
-       }
-       
-        // Update the center of the map with more zoom
-       mymap.setView(coords.reverse() ,6, animate = true)  
-        
-    //    Adding style to the choroplet layer
-        function style(feature) {
-            return {
-                fillColor: getColor(feature.properties.INCLUSION_MUN),
-                weight: 1,
-                opacity: 1,
-                color: 'white',
-                fillOpacity: 0.8
-            };
-        }
-    
-        // Adding behaviour to the map by calling the previously defined functinos
-        function onEachFeature(feature, layer) {
-            layer.on({
-                mouseover: highlightFeature,
-                mouseout: resetHighlight,
-                click: zoomToFeature
-            });
-        }     
-        
-        // Adding the geojson layer with the choroplet options
-        geojson = L.geoJson(states, {
-            style: style,
-            onEachFeature: onEachFeature
-        }).addTo(mymap);
-    
-        info.addTo(mymap);
-        legend.addTo(mymap);
-        
-        //   Plotting boxplot
+        let data1 = []
+        // Appending each piece of data for every variable
         for ( let i = 0; i < xData.length; i ++ ) {
             let result = {
                 type: 'box',
-                // Y: ["d1","d2","d3"],
-                // x: [1,2,3],
                 y: yData[i],
                 name: xData[i],
                 jitter: 0.5,
@@ -375,25 +383,19 @@ function map_init(){
                 }
             };
             data1.push(result);
-        };
-        
-            Plotly.newPlot('plot', data1, layout);
-              
-
-        console.log("ok")
+        }
+    
+        Plotly.newPlot('plot', data1, layout)
     })
 }
-
 // Initializing webpage
 init()
-function graph(){
 
-    
-}
 // Function that calls the other functions every time a state is selected
 function stateChanged(result){
     general_info(result)
     map_init()
-    graph()
+    plot()
+
 }
 

@@ -95,10 +95,10 @@ legend.onAdd = function (map) {
 // ---------------------------------------------Boxplot----------------------------------------------------------------------------
 //  Create the Traces
 
-let xData = ['Television', 'Radio',
-'Fixed<br>Telphony', 'Mobile<br>Telephony',
-'Pay<br>Television', 'Video Games<br>Console',
-'Internet', 'Streaming<br>Services', 'Computer'];
+var xData = ['Television', 'Radio',
+        'Fixed<br>Telphone', 'Cellphone',
+        'Paid TV', 'Video Games<br>Console',
+        'Internet', 'Streaming<br>Services', 'Computer'];
 
 let colors = ['rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)', 'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)', 'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)', 'rgba(255, 140, 184, 0.5)', 'rgba(79, 90, 117, 0.5)', 'rgba(222, 223, 0, 0.5)'];
   
@@ -178,9 +178,7 @@ d3.json("../api_municipios_no_coords").then((data) => {
       data.map(val => val.VPH_SPMVPI/val.TVIVPARHAB*100),
       data.map(val => val.VPH_PC/val.TVIVPARHAB*100),
         ];
-    
-    
-    
+    console.log(data.map(val => val.VPH_TV/val.TVIVPARHAB*100))
     for ( let i = 0; i < xData.length; i ++ ) {
         let result = {
             type: 'box',

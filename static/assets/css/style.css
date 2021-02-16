@@ -162,7 +162,7 @@ h1, h2, h3, h4, h5, h6 {
 # Header
 --------------------------------------------------------------*/
 #header {
-  background: black;
+  background: rgb(0, 0, 0);
   transition: all 0.5s;
   z-index: 997;
   top: 40px;
@@ -195,7 +195,7 @@ h1, h2, h3, h4, h5, h6 {
   #header {
     top: 0;
     padding: 15px 0;
-    background: transparent;
+    background: black;
   }
   #header .logo {
     font-size: 28px;
@@ -206,6 +206,12 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(0, 0, 0, 0.9) !important;
 }
 
+.card{
+ 
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 30px; /* Added */
+}
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
@@ -1517,4 +1523,11 @@ margin-left: 20px;}
   max-height: 100%;
   object-fit: cover;
   border-radius: 25px;
+}
+
+td{
+    height: 50px; 
+    width: 50px;
+    text-align: center; 
+    vertical-align: middle;
 }

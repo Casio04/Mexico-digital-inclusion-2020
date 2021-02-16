@@ -178,7 +178,7 @@ d3.json("../api_municipios_no_coords").then((data) => {
       data.map(val => val.VPH_SPMVPI/val.TVIVPARHAB*100),
       data.map(val => val.VPH_PC/val.TVIVPARHAB*100),
         ];
-    console.log(data.map(val => val.VPH_TV/val.TVIVPARHAB*100))
+    
     for ( let i = 0; i < xData.length; i ++ ) {
         let result = {
             type: 'box',

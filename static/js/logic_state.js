@@ -1,5 +1,4 @@
-console.log(screen.width)
-console.log(screen.height)
+
 let celular  = 0
 let internet  = 0
 let PC  = 0
@@ -276,10 +275,9 @@ function map_init(){
         // Type: Multipolygon
         var coords = data[0].features[0].geometry.coordinates[0][0][0]
        }
-        let rev = coords.reverse()
         // Update the center of the map with more zoom
-       mymap.setView(rev,6, animate = true)  
-        
+       mymap.setView([coords[1],coords[0]] ,6, animate = true)  
+       
         // Adding style to the choroplet layer
         function style(feature) {
             return {

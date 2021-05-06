@@ -31,5 +31,29 @@ This web application was created using information from the last 2020 Census mad
 * Programming language
   * Python
 
+## Outcomes
+Landing page
+
+![Landing](/static/images/landing.JPG)
+
+National overview
+
+![National](/static/images/National-pt1.JPG)
+
+State overview
+
+![StatePt1](/static/images/state-pt1.JPG)
+
+State graphs
+
+![stategraphs](/static/images/state-pt2.JPG)
+
+About
+
+![About](/static/images/About.JPG)
+
 ## Usage
 The final web application is deployed and ready to use on this [Heroku Link](https://censoinegi.herokuapp.com/index.html)
+
+## Sources
+All the data used can be found on the [Official INEGI website](https://www.inegi.org.mx/programas/ccpv/2020/#:~:text=El%20Censo%20de%20Poblaci%C3%B3n%20y,viviendas%20para%20obtener%20informaci%C3%B3n%20sobre)
